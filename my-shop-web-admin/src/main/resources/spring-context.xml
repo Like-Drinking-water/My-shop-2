@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 采用注解的方式 -->
+    <context:annotation-config />
+    <context:component-scan base-package="com.huanleichen.my.shop.web.admin">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+
+
+    <!-- 以下为未采用注解的方式 -->
+    <!-- <bean id="springContext" class="com.huanleichen.my.shop.commons.utils.SpringContext" /> -->
+    <!-- DAO -->
+    <!-- <bean id="UserDao" class="com.huanleichen.my.shop.dao.impl.UserDaoImpl"></bean> -->
+    <!-- Service -->
+    <!-- <bean id="LoginService" class="com.huanleichen.my.shop.service.impl.LoginServiceImpl"></bean> -->
+</beans>
