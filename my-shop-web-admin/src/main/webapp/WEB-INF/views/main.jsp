@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-    欢迎${login.userName}
+    欢迎<br />
+    <a href="/myshop/logout">注销</a> <br />
+    <a href="/myshop/tbUserInfo">查询用户信息</a>
 </body>
 </html>
