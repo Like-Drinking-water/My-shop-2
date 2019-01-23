@@ -27,26 +27,20 @@ public class TestService {
 
     }
 
-    @Test
-    public void testInsert() {
-        TbUser tbUser = new TbUser("good", "1234545", "134254853", "787845@huanleichen.com", new Date(), new Date());
-
-        tbUserService.insert(tbUser);
-    }
 
     @Test
     public void testDelete() {
-        tbUserService.delete(37);
+        tbUserService.delete(37L);
     }
 
     @Test
     public void testGetTbUserById() {
-        System.out.println(tbUserService.getTbUserById(36));
+        System.out.println(tbUserService.getTbUserById(36l));
     }
 
     @Test
     public void testUpdate() {
-        TbUser user = tbUserService.getTbUserById(36);
+        TbUser user = tbUserService.getTbUserById(36L);
 
         user.setUsername("chen");
         user.setUpdated(new Date());

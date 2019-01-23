@@ -16,11 +16,5 @@
     <name>my-shop-domain</name>
     <description></description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

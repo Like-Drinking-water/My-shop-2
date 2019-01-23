@@ -5,31 +5,32 @@ import org.springframework.util.DigestUtils;
 import java.util.Date;
 
 public class TbUser {
-    private long id;
+    private Long id;
     private String username;
     private String password;
     private String phone;
     private String email;
     private Date created;
     private Date updated;
+    private boolean remember;
 
     public TbUser() {
     }
 
     public TbUser(String username, String password, String phone, String email, Date created, Date updated) {
         this.username = username;
-        this.password = DigestUtils.md5DigestAsHex(password.getBytes());
+        this.password = password;
         this.phone = phone;
         this.email = email;
         this.created = created;
         this.updated = updated;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,7 +47,7 @@ public class TbUser {
     }
 
     public void setPassword(String password) {
-        this.password = DigestUtils.md5DigestAsHex(password.getBytes());
+        this.password = password;
     }
 
     public String getPhone() {
@@ -79,6 +80,14 @@ public class TbUser {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public boolean isRemember() {
+        return remember;
+    }
+
+    public void setRemember(boolean remember) {
+        this.remember = remember;
     }
 
     @Override

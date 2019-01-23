@@ -21,13 +21,13 @@ public interface TbUserDao {
      * 删除一个 tbUser
      * @param id 要删除的 tbUser 的 ID
      */
-    public void delete(long id);
+    public void delete(Long id);
 
     /**
      * 获取一个 tbUser
      * @param id 要获取的 tbUser 的 ID
      */
-    public TbUser getTbUserById(long id);
+    public TbUser getTbUserById(Long id);
 
     /**
      * 修改 tbUser 的信息
@@ -41,4 +41,18 @@ public interface TbUserDao {
      * @return 返回名字中含有 name 的 tbUser 的 List 集合
      */
     public List<TbUser> selectByName(String username);
+
+    /**
+     * 通过 email 获取对应的 tbUser
+     * @param email 获取的 tbUser 的邮箱
+     * @return 放回对应的 tbUser
+     */
+    public TbUser selectByEmail(String email);
+
+    /**
+     * 根据传入的 tbUser 信息查询所有相匹配的 tbUser
+     * @param tbUser
+     * @return
+     */
+    public List<TbUser> search(TbUser tbUser);
 }
