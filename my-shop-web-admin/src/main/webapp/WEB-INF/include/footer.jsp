@@ -26,3 +26,7 @@
 <script src="static/assets/plugins/jquery-validation/dist/localization/messages_zh.js"></script>
 <!-- validate -->
 <script src="static/assets/js/formValidate.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="static/assets/plugins/iCheck/icheck.min.js"></script>
+<!-- app -->
+<script src="static/assets/js/app.js"></script>
