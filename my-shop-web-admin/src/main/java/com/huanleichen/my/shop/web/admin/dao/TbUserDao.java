@@ -3,6 +3,7 @@ package com.huanleichen.my.shop.web.admin.dao;
 import com.huanleichen.my.shop.domain.TbUser;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TbUserDao {
     /**
@@ -55,4 +56,23 @@ public interface TbUserDao {
      * @return
      */
     public List<TbUser> search(TbUser tbUser);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    public void deleteMulti(String[] ids);
+
+    /**
+     * 获取分页
+     * @param map start为开始 length为长度
+     * @return
+     */
+    public List<TbUser> getPage(Map<String, Integer> map);
+
+    /**
+     * 返回数据库的总记录数
+     * @return
+     */
+    public int count();
 }

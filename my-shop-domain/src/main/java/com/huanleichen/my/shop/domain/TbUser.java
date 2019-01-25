@@ -1,7 +1,5 @@
 package com.huanleichen.my.shop.domain;
 
-import org.springframework.util.DigestUtils;
-
 import java.util.Date;
 
 public class TbUser {

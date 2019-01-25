@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TbUserServiceImpl implements TbUserService {
@@ -91,6 +93,31 @@ public class TbUserServiceImpl implements TbUserService {
         return tbUserDao.search(tbUser);
     }
 
+    @Override
+    public void deleteMulti(String[] ids) {
+        tbUserDao.deleteMulti(ids);
+    }
+
+    @Override
+    public List<TbUser> getPage(int start, int length) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+
+        map.put("start", start);
+        map.put("length", length);
+
+        return tbUserDao.getPage(map);
+    }
+
+    @Override
+    public int count() {
+        return tbUserDao.count();
+    }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        return tbUserDao.selectByEmail(email) != null;
+    }
+
     /**
      * 检查提交的用户信息是否符合规范
      * @param tbUser 提交的用户信息
@@ -105,6 +132,10 @@ public class TbUserServiceImpl implements TbUserService {
 
         else if (!RegexpUtils.checkEmail(tbUser.getEmail())) {
             baseResult = BaseResult.failResult("邮箱格式不正确");
+        }
+
+        else if (isEmailExist(tbUser.getEmail())) {
+            baseResult = BaseResult.failResult("邮箱已存在");
         }
 
         else if (StringUtils.isBlank(tbUser.getPassword())) {

@@ -93,14 +93,14 @@
 
                         <div class="row" style="padding-left: 14px;padding-top: 10px;">
                             <a href="/myshop/form" type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> 添加</a>&nbsp;&nbsp;&nbsp;
-                            <a href="#" id="delete_multi" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i> 删除</a>&nbsp;&nbsp;&nbsp;
+                            <button id="delete_multi" type="button" class="btn btn-default btn-sm" onclick="app.deleteMulti()"><i class="fa fa-trash-o"></i> 删除</button>&nbsp;&nbsp;&nbsp;
                             <a href="#" type="button" class="btn btn-default btn-sm"><i class="fa fa-download"></i> 导入</a>&nbsp;&nbsp;&nbsp;
                             <a href="#" type="button" class="btn btn-default btn-sm"><i class="fa fa-upload"></i> 导出</a>&nbsp;&nbsp;&nbsp;
                             <button type="button" class="btn btn-info btn-sm" onclick="$('#search_box').css('display') == 'none' ? $('#search_box').show('fast') : $('#search_box').hide('fast')"><i class="fa fa-search"></i> 搜索</button>
                         </div>
 
                     <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
+                    <div class="box-body table-responsive">
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -119,25 +119,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items = "${tbUserInfo}" var="user" step="1">
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input id="${user.id}" type="checkbox" class="minimal">
-                                        </label>
-                                    </td>
-                                    <td>${user.id}</td>
-                                    <td>${user.username}</td>
-                                    <td>${user.phone}</td>
-                                    <td>${user.email}</td>
-                                    <td><fmt:formatDate value="${user.created}" pattern="yyyy-MM-DD HH:mm:ss"></fmt:formatDate></td>
-                                    <td><fmt:formatDate value="${user.updated}" pattern="yyyy-MM-DD HH:mm:ss"></fmt:formatDate></td>
-                                    <td>
-                                        <a href="#" type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> 修改</a>&nbsp;&nbsp;&nbsp;
-                                        <a href="#" type="button" class="btn btn-danger btn-sm"><i class="fa  fa-trash-o"></i> 删除</a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
+                            <%--<c:forEach items = "${tbUserInfo}" var="user" step="1">--%>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label>--%>
+                                            <%--<input id="${user.id}" type="checkbox" class="minimal">--%>
+                                        <%--</label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>${user.id}</td>--%>
+                                    <%--<td>${user.username}</td>--%>
+                                    <%--<td>${user.phone}</td>--%>
+                                    <%--<td>${user.email}</td>--%>
+                                    <%--<td><fmt:formatDate value="${user.created}" pattern="yyyy-MM-DD HH:mm:ss"></fmt:formatDate></td>--%>
+                                    <%--<td><fmt:formatDate value="${user.updated}" pattern="yyyy-MM-DD HH:mm:ss"></fmt:formatDate></td>--%>
+                                    <%--<td>--%>
+                                        <%--<a href="#" type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> 修改</a>&nbsp;&nbsp;&nbsp;--%>
+                                        <%--<a href="#" type="button" class="btn btn-danger btn-sm"><i class="fa  fa-trash-o"></i> 删除</a>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                            <%--</c:forEach>--%>
                             </tbody>
                         </table>
                     </div>
@@ -151,25 +151,65 @@
 
         </section>
     </div>
-    <jsp:include page="../include/copyright.jsp"></jsp:include>
-</div>
 
+</div>
+<jsp:include page="../include/copyright.jsp"></jsp:include>
 <jsp:include page="../include/footer.jsp"></jsp:include>
-<sys:modal message="请至少选择一个要删除的用户"></sys:modal>
+<sys:modal ></sys:modal>
 <script>
     $(function () {
-        var deleteArray = new Array();
-
-        $("#delete_multi").click(function () {
-            app.getCheckBox().each(function () {
-                if ($(this).attr('id') != null && $(this).attr('id') != 'undefine' && $(this).is(':checked')) {
-                    deleteArray.push($(this).attr('id'))
+        $("table").DataTable({
+            lengthChange:false,
+            searching:false,
+            serverSide:true,
+            processing:true,
+            deferRender:true,
+            ordering:false,
+            ajax: {
+                url: '/myshop/page'
+            },
+            columns: [
+                {
+                    data:function ( row, type, val, meta) {
+                        return "<input id=" + row.id + " type='checkbox' class='minimal'>"
+                    }
+                },
+                { data: 'id' },
+                { data: 'username' },
+                { data: 'phone' },
+                { data: 'email' },
+                { data: 'created'},
+                { data: 'updated'},
+                {
+                    data:function ( row, type, val, meta) {
+                        return "<a href='#' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;" +
+                                "<a href='#' type='button' class='btn btn-danger btn-sm'><i class='fa  fa-trash-o'></i> 删除</a>"
+                    }
+                },
+            ],
+            drawCallback:function () {
+                app.init()
+                app.check()
+            },
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
                 }
-
-            })
-
-            if (deleteArray.length == 0) {
-                $("#modal-default").modal("show")
             }
         })
     })

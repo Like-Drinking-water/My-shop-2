@@ -1,6 +1,8 @@
 package com.huanleichen.my.shop.commons.dto;
 
-public class BaseResult {
+import java.io.Serializable;
+
+public class BaseResult implements Serializable {
     public static final int SUCCESS_STATUS = 200;
     public static final int FAIL_STATUS = 500;
 

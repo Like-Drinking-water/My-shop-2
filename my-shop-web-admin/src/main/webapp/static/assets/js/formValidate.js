@@ -8,6 +8,25 @@ var Validate = function () {
             return this.optional(element) || (length == 11 && mobile.test(value))
         }, "手机号码格式错误")
 
+        $.validator.addMethod("email_exist", function (value, element) {
+            var isExist = false;
+
+            $.ajax({
+                url: "/myshop/isEmailExist",
+                type: "POST",
+                async: false,
+                dataType: "JSON",
+                data: {"email":value},
+                success: function (data) {
+
+                    isExist = data.isExist
+
+                }
+            })
+            return this.optional(element) || !isExist;
+
+        }, "邮箱已存在")
+
         $("#inputForm").validate({
             errorElement: "span",
             errorClass: "help-block",

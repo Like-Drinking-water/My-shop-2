@@ -19,6 +19,8 @@ folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="static/assets/css/skins/_all-skins.min.css">
 <!-- iCheck -->
 <link rel="stylesheet" href="static/assets/plugins/iCheck/all.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="static/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

@@ -44,7 +44,7 @@
                             <label for="email" class="col-sm-2 control-label">邮箱</label>
 
                             <div class="col-sm-10">
-                                <form:input cssClass="form-control required email" placeholder="请输入邮箱"  path="email" />
+                                <form:input cssClass="form-control required email email_exist" placeholder="请输入邮箱"  path="email" />
                             </div>
                         </div>
                         <div class="form-group">
