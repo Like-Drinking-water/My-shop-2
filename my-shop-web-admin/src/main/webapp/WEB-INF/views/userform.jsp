@@ -32,12 +32,13 @@
             </c:if>
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">添加用户</h3>
+                    <h3 class="box-title">${tbUser.id == null? "添加用户" : "编辑用户"}</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
 
                 <from:form id="inputForm" cssClass="form-horizontal" action="/myshop/save" method="post" modelAttribute="tbUser">
+                    <from:hidden path="id"></from:hidden>
                     <div class="box-body">
 
                         <div class="form-group">
@@ -84,5 +85,12 @@
     </div>
     <jsp:include page="../include/copyright.jsp"></jsp:include>
     <jsp:include page="../include/footer.jsp"></jsp:include>
+<script>
+    $(function () {
+        if (${tbUser.id != null}) {
+            $("#email").attr("class", "form-control required email")
+        }
+    })
+</script>
 </body>
 </html>

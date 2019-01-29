@@ -1,35 +1,23 @@
 package com.huanleichen.my.shop.domain;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huanleichen.my.shop.commons.persistence.BaseEntity;
 
-public class TbUser {
-    private Long id;
+public class TbUser extends BaseEntity {
     private String username;
     private String password;
     private String phone;
     private String email;
-    private Date created;
-    private Date updated;
     private boolean remember;
 
     public TbUser() {
     }
 
-    public TbUser(String username, String password, String phone, String email, Date created, Date updated) {
+    public TbUser(String username, String password, String phone, String email) {
         this.username = username;
         this.password = password;
         this.phone = phone;
         this.email = email;
-        this.created = created;
-        this.updated = updated;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -40,6 +28,7 @@ public class TbUser {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -64,22 +53,6 @@ public class TbUser {
         this.email = email;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
     public boolean isRemember() {
         return remember;
     }
@@ -91,13 +64,13 @@ public class TbUser {
     @Override
     public String toString() {
         return "TbUser{" +
-                "id=" + id +
+                "id=" + super.getId() +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                ", created=" + created +
-                ", updated=" + updated +
+                ", created=" + super.getCreated() +
+                ", updated=" + super.getUpdated() +
                 '}';
     }
 }

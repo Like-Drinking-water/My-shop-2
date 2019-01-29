@@ -48,13 +48,4 @@ public class TestService {
         tbUserService.update(user);
     }
 
-    @Test
-    public void testSelectByName() {
-        List<TbUser> tbUsers = tbUserService.selectByName("uni");
-
-        for (int i = 0; i < tbUsers.size(); i++) {
-            System.out.println(tbUsers.get(i));
-        }
-
-    }
 }

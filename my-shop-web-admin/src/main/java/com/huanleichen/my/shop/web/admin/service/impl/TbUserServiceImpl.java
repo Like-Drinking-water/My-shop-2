@@ -1,6 +1,7 @@
 package com.huanleichen.my.shop.web.admin.service.impl;
 
 import com.huanleichen.my.shop.commons.dto.BaseResult;
+import com.huanleichen.my.shop.commons.dto.PageInfo;
 import com.huanleichen.my.shop.commons.utils.RegexpUtils;
 import com.huanleichen.my.shop.domain.TbUser;
 import com.huanleichen.my.shop.web.admin.dao.TbUserDao;
@@ -45,11 +46,6 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public List<TbUser> selectByName(String username) {
-        return tbUserDao.selectByName(username);
-    }
-
-    @Override
     public TbUser login(String email, String password, boolean remember) {
         TbUser tbUser = tbUserDao.selectByEmail(email);
 
@@ -70,6 +66,7 @@ public class TbUserServiceImpl implements TbUserService {
     @Override
     public BaseResult save(TbUser tbUser) {
         BaseResult baseResult = check(tbUser);
+        tbUser.setPassword(DigestUtils.md5DigestAsHex(tbUser.getPassword().getBytes()));
 
         //如果用户的信息格式填写正确
         if (baseResult.getStatus() == BaseResult.SUCCESS_STATUS) {
@@ -88,10 +85,6 @@ public class TbUserServiceImpl implements TbUserService {
         return baseResult;
     }
 
-    @Override
-    public List<TbUser> search(TbUser tbUser) {
-        return tbUserDao.search(tbUser);
-    }
 
     @Override
     public void deleteMulti(String[] ids) {
@@ -99,23 +92,45 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public List<TbUser> getPage(int start, int length) {
-        Map<String, Integer> map = new HashMap<String, Integer>();
+    public PageInfo<TbUser> getPage(int start, int length, int draw, TbUser tbUser) {
+        int count = tbUserDao.count(tbUser);
+        Map<String, Object> map = new HashMap<>();
 
         map.put("start", start);
         map.put("length", length);
+        map.put("draw", draw);
+        map.put("tbUser", tbUser);
+        List<TbUser> data = tbUserDao.getPage(map);
 
-        return tbUserDao.getPage(map);
+        PageInfo<TbUser> page = new PageInfo<>();
+        page.setDraw(draw);
+        page.setRecordsFiltered(count);
+        page.setRecordsTotal(count);
+        page.setData(data);
+
+        return page;
     }
 
-    @Override
-    public int count() {
-        return tbUserDao.count();
-    }
 
     @Override
-    public boolean isEmailExist(String email) {
-        return tbUserDao.selectByEmail(email) != null;
+    public boolean isEmailExist(String email, TbUser tbUser) {
+        //如果 tbUser 的 id 为空
+        //则表示在添加用户，则新增用户的邮箱不能与之前任一用户的邮箱相同
+        if (tbUser.getId() == null) {
+            return tbUserDao.selectByEmail(email) != null;
+        }
+        //表示修改用户信息时
+        else {
+            //如果邮箱不变的化，则直接返回 false
+            if (email.equals(tbUserDao.getTbUserById(tbUser.getId()).getEmail())) {
+                return false;
+            }
+
+            else {
+                return tbUserDao.selectByEmail(email) != null;
+            }
+        }
+
     }
 
     /**
@@ -134,7 +149,7 @@ public class TbUserServiceImpl implements TbUserService {
             baseResult = BaseResult.failResult("邮箱格式不正确");
         }
 
-        else if (isEmailExist(tbUser.getEmail())) {
+        else if (isEmailExist(tbUser.getEmail(), tbUser)) {
             baseResult = BaseResult.failResult("邮箱已存在");
         }
 
@@ -158,4 +173,5 @@ public class TbUserServiceImpl implements TbUserService {
 
         return baseResult;
     }
+
 }

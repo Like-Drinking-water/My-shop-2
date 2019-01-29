@@ -40,44 +40,42 @@
             </c:if>
                 <div id="search_box" class="row" style="display: none">
                 <div class="col-xs-12">
-                <div class="box box-info">
+                <div class="box box-info form-horizontal">
                     <div class="box-header with-border">
                         <div class="box-header with-border">
                             <h3 class="box-title">高级搜索</h3>
                         </div>
                         <div class="row" style="padding-top: 10px">
-                            <form:form cssClass="form-horizontal" action="/myshop/search" method="post" modelAttribute="tbUser">
-                                <div class="col-xs-12 col-md-3">
-                                    <div class="form-group">
-                                        <label for="username" class="col-sm-3  control-label">用户名</label>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-3  control-label">用户名</label>
 
-                                        <div class="col-sm-9">
-                                            <form:input cssClass="form-control" placeholder="用户名"  path="username" />
-                                        </div>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" placeholder="用户名"  id="username" />
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-3">
-                                    <div class="form-group">
-                                        <label for="email" class="col-sm-3  control-label">邮箱</label>
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-3  control-label">邮箱</label>
 
-                                        <div class="col-sm-9">
-                                            <form:input cssClass="form-control" placeholder="邮箱"  path="email" />
-                                        </div>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" placeholder="邮箱"  id="email" />
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-3">
-                                    <div class="form-group">
-                                        <label for="phone" class="col-sm-3  control-label">手机</label>
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="form-group">
+                                    <label for="phone" class="col-sm-3  control-label">手机</label>
 
-                                        <div class="col-sm-9">
-                                            <form:input cssClass="form-control" placeholder="手机"  path="phone" />
-                                        </div>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" placeholder="手机"  id="phone" />
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-md-3">
-                                    <button type="submit" class="btn btn-info"><i class="fa fa-search"></i> 搜索</button>
-                                </div>
-                            </form:form>
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <button type="button" class="btn btn-info" id="search_button"><i class="fa fa-search"></i> 搜索</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,25 +117,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <%--<c:forEach items = "${tbUserInfo}" var="user" step="1">--%>
-                                <%--<tr>--%>
-                                    <%--<td>--%>
-                                        <%--<label>--%>
-                                            <%--<input id="${user.id}" type="checkbox" class="minimal">--%>
-                                        <%--</label>--%>
-                                    <%--</td>--%>
-                                    <%--<td>${user.id}</td>--%>
-                                    <%--<td>${user.username}</td>--%>
-                                    <%--<td>${user.phone}</td>--%>
-                                    <%--<td>${user.email}</td>--%>
-                                    <%--<td><fmt:formatDate value="${user.created}" pattern="yyyy-MM-DD HH:mm:ss"></fmt:formatDate></td>--%>
-                                    <%--<td><fmt:formatDate value="${user.updated}" pattern="yyyy-MM-DD HH:mm:ss"></fmt:formatDate></td>--%>
-                                    <%--<td>--%>
-                                        <%--<a href="#" type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> 修改</a>&nbsp;&nbsp;&nbsp;--%>
-                                        <%--<a href="#" type="button" class="btn btn-danger btn-sm"><i class="fa  fa-trash-o"></i> 删除</a>--%>
-                                    <%--</td>--%>
-                                <%--</tr>--%>
-                            <%--</c:forEach>--%>
+
                             </tbody>
                         </table>
                     </div>
@@ -158,60 +138,63 @@
 <sys:modal ></sys:modal>
 <script>
     $(function () {
-        $("table").DataTable({
-            lengthChange:false,
-            searching:false,
-            serverSide:true,
-            processing:true,
-            deferRender:true,
-            ordering:false,
-            ajax: {
-                url: '/myshop/page'
-            },
-            columns: [
-                {
-                    data:function ( row, type, val, meta) {
-                        return "<input id=" + row.id + " type='checkbox' class='minimal'>"
-                    }
-                },
-                { data: 'id' },
-                { data: 'username' },
-                { data: 'phone' },
-                { data: 'email' },
-                { data: 'created'},
-                { data: 'updated'},
-                {
-                    data:function ( row, type, val, meta) {
-                        return "<a href='#' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;" +
-                                "<a href='#' type='button' class='btn btn-danger btn-sm'><i class='fa  fa-trash-o'></i> 删除</a>"
-                    }
-                },
-            ],
-            drawCallback:function () {
-                app.init()
-                app.check()
-            },
-            language: {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 项结果",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页"
+        function date(data) {
+            var date = new Date(data)
+            var year = date.getFullYear()
+            var month = date.getMonth() + 1
+            var day = date.getDate();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+            return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+        }
+
+        var columns = [
+            {
+                data:function ( row, type, val, meta) {
+                    return "<input id=" + row.id + " type='checkbox' class='minimal'>"
                 }
+            },
+            { data: 'id' },
+            { data: 'username' },
+            { data: 'phone' },
+            { data: 'email' },
+            {
+                data: 'created',
+                render: function ( data, type, row ) {
+                    return date(data)
+                }
+            },
+            {
+                data: 'updated',
+                render: function ( data, type, row ) {
+                    return date(data)
+                }
+            },
+            {
+                data:function ( row, type, val, meta) {
+                    return "<a href='/myshop/form?id=" + row.id + "' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;" +
+                        "<button type='button' class='btn btn-danger btn-sm' onclick='app.deleteOne(" + row.id + ")'><i class='fa  fa-trash-o'></i> 删除</button>"
+                }
+            },
+        ]
+
+        var datatable = app.initPage("/myshop/page", columns)
+
+        $("#search_button").click(function () {
+            var username = $("#username").val();
+            var email = $("#username").val();
+            var phone = $("#phone").val();
+            var param = {
+                "username": username,
+                "email": email,
+                "phone": phone
             }
+
+            datatable.settings()[0].ajax.data = param;
+            datatable.ajax.reload();
         })
+
     })
 </script>
 </body>

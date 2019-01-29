@@ -37,25 +37,11 @@ public interface TbUserDao {
     public void update(TbUser tbUser);
 
     /**
-     * 通过用户名进行模糊查询
-     * @param username 要查询的 tbUser 的用户名
-     * @return 返回名字中含有 name 的 tbUser 的 List 集合
-     */
-    public List<TbUser> selectByName(String username);
-
-    /**
      * 通过 email 获取对应的 tbUser
      * @param email 获取的 tbUser 的邮箱
      * @return 放回对应的 tbUser
      */
     public TbUser selectByEmail(String email);
-
-    /**
-     * 根据传入的 tbUser 信息查询所有相匹配的 tbUser
-     * @param tbUser
-     * @return
-     */
-    public List<TbUser> search(TbUser tbUser);
 
     /**
      * 批量删除
@@ -68,11 +54,11 @@ public interface TbUserDao {
      * @param map start为开始 length为长度
      * @return
      */
-    public List<TbUser> getPage(Map<String, Integer> map);
+    public List<TbUser> getPage(Map<String, Object> map);
 
     /**
      * 返回数据库的总记录数
      * @return
      */
-    public int count();
+    public int count(TbUser tbUser);
 }
