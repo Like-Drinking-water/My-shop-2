@@ -1,10 +1,12 @@
 package com.huanleichen.my.shop.web.admin.dao;
 
 import com.huanleichen.my.shop.domain.TbUser;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface TbUserDao {
     /**
      * 获取所有的 TbUser

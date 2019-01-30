@@ -9,7 +9,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="static/assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="/myshop/static/assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>${user.username}</p>
@@ -27,8 +27,18 @@
                         </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/myshop/tbUserInfo"><i class="fa fa-circle-o"></i> 用户信息</a></li>
-                    <li><a href="/myshop/form"><i class="fa fa-circle-o"></i> 添加用户</a></li>
+                    <li><a href="/myshop/user/tbUserInfo"><i class="fa fa-circle-o"></i> 用户信息</a></li>
+                    <li><a href="/myshop/user/form"><i class="fa fa-circle-o"></i> 添加用户</a></li>
+                </ul>
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>内容管理</span>
+                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/myshop/content/category/list"><i class="fa fa-circle-o"></i> 内容分类</a></li>
+                    <li><a href="/myshop/content/list"><i class="fa fa-circle-o"></i> 内容列表</a></li>
                 </ul>
             </li>
         </ul>

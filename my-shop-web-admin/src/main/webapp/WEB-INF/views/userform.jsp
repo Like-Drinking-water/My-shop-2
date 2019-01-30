@@ -37,7 +37,7 @@
                 <!-- /.box-header -->
                 <!-- form start -->
 
-                <from:form id="inputForm" cssClass="form-horizontal" action="/myshop/save" method="post" modelAttribute="tbUser">
+                <from:form id="inputForm" cssClass="form-horizontal" action="/myshop/user/save" method="post" modelAttribute="tbUser">
                     <from:hidden path="id"></from:hidden>
                     <div class="box-body">
 

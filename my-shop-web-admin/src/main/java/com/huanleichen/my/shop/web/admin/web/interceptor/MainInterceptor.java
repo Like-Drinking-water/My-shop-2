@@ -20,7 +20,7 @@ public class MainInterceptor implements HandlerInterceptor {
         //用户未登录
         else {
             //重定向到登录页面
-            response.sendRedirect("login");
+            response.sendRedirect("/myshop/login");
             return false;
         }
     }

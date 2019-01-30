@@ -90,8 +90,8 @@
                         <h3 class="box-title">用户信息</h3>
 
                         <div class="row" style="padding-left: 14px;padding-top: 10px;">
-                            <a href="/myshop/form" type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> 添加</a>&nbsp;&nbsp;&nbsp;
-                            <button id="delete_multi" type="button" class="btn btn-default btn-sm" onclick="app.deleteMulti()"><i class="fa fa-trash-o"></i> 删除</button>&nbsp;&nbsp;&nbsp;
+                            <a href="/myshop/user/form" type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> 添加</a>&nbsp;&nbsp;&nbsp;
+                            <button id="delete_multi" type="button" class="btn btn-default btn-sm" onclick="app.deleteMulti('/myshop/user/deleteMulti')"><i class="fa fa-trash-o"></i> 删除</button>&nbsp;&nbsp;&nbsp;
                             <a href="#" type="button" class="btn btn-default btn-sm"><i class="fa fa-download"></i> 导入</a>&nbsp;&nbsp;&nbsp;
                             <a href="#" type="button" class="btn btn-default btn-sm"><i class="fa fa-upload"></i> 导出</a>&nbsp;&nbsp;&nbsp;
                             <button type="button" class="btn btn-info btn-sm" onclick="$('#search_box').css('display') == 'none' ? $('#search_box').show('fast') : $('#search_box').hide('fast')"><i class="fa fa-search"></i> 搜索</button>
@@ -99,7 +99,7 @@
 
                     <!-- /.box-header -->
                     <div class="box-body table-responsive">
-                        <table class="table table-hover">
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                             <tr>
                                 <th>
@@ -137,6 +137,7 @@
 <jsp:include page="../include/footer.jsp"></jsp:include>
 <sys:modal ></sys:modal>
 <script>
+
     $(function () {
         function date(data) {
             var date = new Date(data)
@@ -173,13 +174,14 @@
             },
             {
                 data:function ( row, type, val, meta) {
-                    return "<a href='/myshop/form?id=" + row.id + "' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;" +
-                        "<button type='button' class='btn btn-danger btn-sm' onclick='app.deleteOne(" + row.id + ")'><i class='fa  fa-trash-o'></i> 删除</button>"
+                    var url = '/myshop/user/deleteMulti'
+                    return "<a href='/myshop/user/form?id=" + row.id + "' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;" +
+                        '<button type="button" class="btn btn-sm btn-danger" onclick="app.deleteOne(\'' + row.id + '\', \'' + url + '\')"><i class="fa fa-trash-o"></i> 删除</button>'
                 }
             },
         ]
 
-        var datatable = app.initPage("/myshop/page", columns)
+        var datatable = app.initPage("/myshop/user/page", columns)
 
         $("#search_button").click(function () {
             var username = $("#username").val();

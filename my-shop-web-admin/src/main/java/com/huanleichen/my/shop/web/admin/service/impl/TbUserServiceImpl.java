@@ -2,7 +2,7 @@ package com.huanleichen.my.shop.web.admin.service.impl;
 
 import com.huanleichen.my.shop.commons.dto.BaseResult;
 import com.huanleichen.my.shop.commons.dto.PageInfo;
-import com.huanleichen.my.shop.commons.utils.RegexpUtils;
+import com.huanleichen.my.shop.commons.validator.BeanValidator;
 import com.huanleichen.my.shop.domain.TbUser;
 import com.huanleichen.my.shop.web.admin.dao.TbUserDao;
 import com.huanleichen.my.shop.web.admin.service.TbUserService;
@@ -65,8 +65,24 @@ public class TbUserServiceImpl implements TbUserService {
 
     @Override
     public BaseResult save(TbUser tbUser) {
-        BaseResult baseResult = check(tbUser);
-        tbUser.setPassword(DigestUtils.md5DigestAsHex(tbUser.getPassword().getBytes()));
+        BaseResult baseResult = null;
+        String erroString = BeanValidator.validator(tbUser);
+        String checkError = check(tbUser);
+
+        if (StringUtils.isBlank(erroString) && !StringUtils.isBlank(checkError)) {
+            erroString = "数据验证失败：<br />" + checkError;
+        }
+        else if (!StringUtils.isBlank(erroString) && !StringUtils.isBlank(checkError)) {
+            erroString += checkError;
+        }
+        //错误信息，则将错误信息放在 BaseResult 中
+        if (!StringUtils.isBlank(erroString)) {
+            baseResult = BaseResult.failResult(erroString);
+        }
+        //没有错误信息
+        else {
+            baseResult = BaseResult.successResult();
+        }
 
         //如果用户的信息格式填写正确
         if (baseResult.getStatus() == BaseResult.SUCCESS_STATUS) {
@@ -138,40 +154,27 @@ public class TbUserServiceImpl implements TbUserService {
      * @param tbUser 提交的用户信息
      * @return 操作的结果集
      */
-    private BaseResult check(TbUser tbUser) {
-        BaseResult baseResult = null;
+    private String check(TbUser tbUser) {
+        StringBuilder sb = new StringBuilder();
 
-        if (StringUtils.isBlank(tbUser.getEmail())) {
-            baseResult = BaseResult.failResult("邮箱不能为空");
+        if (isEmailExist(tbUser.getEmail(), tbUser)) {
+            sb.append("⭐ 邮箱已存在<br />");
         }
-
-        else if (!RegexpUtils.checkEmail(tbUser.getEmail())) {
-            baseResult = BaseResult.failResult("邮箱格式不正确");
-        }
-
-        else if (isEmailExist(tbUser.getEmail(), tbUser)) {
-            baseResult = BaseResult.failResult("邮箱已存在");
-        }
-
-        else if (StringUtils.isBlank(tbUser.getPassword())) {
-            baseResult = BaseResult.failResult("密码不能为空");
-        }
-
-        else if (StringUtils.isBlank(tbUser.getUsername())) {
-            baseResult = BaseResult.failResult("用户名不能为空");
-        }
-
-        else if (StringUtils.isBlank(tbUser.getPhone())) {
-            baseResult = BaseResult.failResult("手机不能为空");
-        }
-
-        else if (!RegexpUtils.checkPhone(tbUser.getPhone())) {
-            baseResult = BaseResult.failResult("手机号格式不正确");
+        if (tbUser.getId() == null) {
+            if(StringUtils.isBlank(tbUser.getPassword())) {
+                sb.append("⭐ 密码不能为空,且密码的长度应该在 6 - 30 之间<br />");
+            } else if (tbUser.getPassword().length() < 6 || tbUser.getPassword().length() > 30) {
+                sb.append("⭐ 密码的长度应该在 6 - 30 之间<br />");
+            }
         } else {
-            baseResult = BaseResult.successResult();
+            if(!StringUtils.isBlank(tbUser.getPassword())) {
+                if (tbUser.getPassword().length() < 6 || tbUser.getPassword().length() > 30) {
+                    sb.append("⭐ 密码的长度应该在 6 - 30 之间<br />");
+                }
+            }
         }
 
-        return baseResult;
+        return sb.toString();
     }
 
 }
