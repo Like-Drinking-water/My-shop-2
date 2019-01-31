@@ -7,7 +7,7 @@
 <html>
 <head>
 
-    <title>我的商城 | 用户信息</title>
+    <title>我的商城 | 内容管理</title>
     <jsp:include page="../include/header.jsp"></jsp:include>
 
 </head>
@@ -185,7 +185,7 @@
                 { data: 'titleDesc' },
                 {
                     data: function ( row, type, val, meta) {
-                        if (row.url == null) {
+                        if (row.url == null || row.url == '') {
                             return ""
                         }
                         else {
@@ -195,21 +195,21 @@
                 },
                 {
                     data: function ( row, type, val, meta) {
-                        if (row.pic == null) {
+                        if (row.pic == null || row.pic == '') {
                             return ""
                         }
                         else {
-                            return "<a href='" + row.pic + "' target='_blank'>查看</a>"
+                            return "<a href='"+ "/myshop/static/upload/" + row.pic + "' target='_blank'>查看</a>"
                         }
                     }
                 },
                 {
                     data: function ( row, type, val, meta) {
-                        if (row.pic2 == null) {
+                        if (row.pic2 == null || row.pic2 == '') {
                             return ""
                         }
                         else {
-                            return "<a href='" + row.pic2 + "' target='_blank'>查看</a>"
+                            return "<a href='" + "/myshop/static/upload/" + row.pic2 + "' target='_blank'>查看</a>"
                         }
                     }
                 },

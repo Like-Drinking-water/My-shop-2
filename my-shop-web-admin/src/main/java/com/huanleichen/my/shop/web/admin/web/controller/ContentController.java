@@ -57,7 +57,7 @@ public class ContentController {
 
         if (result.getStatus() == BaseResult.SUCCESS_STATUS) {
             redirectAttributes.addFlashAttribute("result", result);
-            return "redirect:content_list";
+            return "redirect:list";
         } else {
             model.addAttribute("result", result);
             return "content_form";

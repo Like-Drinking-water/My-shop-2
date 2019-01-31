@@ -5,11 +5,14 @@
 <%@ taglib prefix="sys" tagdir="/WEB-INF/tags/sys" %>
 <html>
 <head>
-    <title>我的商城 | 用户管理</title>
+    <title>我的商城 | 内容管理</title>
     <jsp:include page="../include/header.jsp"></jsp:include>
     <link rel="stylesheet" href="/myshop/static/assets/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css">
+    <link rel="stylesheet" href="/myshop/static/assets/plugins/dropzone/dropzone.css">
+    <link rel="stylesheet" href="/myshop/static/assets/plugins/dropzone/min/basic.min.css" />
+    <link rel="stylesheet" href="/myshop/static/assets/plugins/wangEditor/wangEditor.min.css">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" style="background: #222D32">
     <jsp:include page="../include/nav.jsp"></jsp:include>
     <jsp:include page="../include/aside.jsp"></jsp:include>
     <!-- Content Wrapper. Contains page content -->
@@ -84,6 +87,7 @@
 
                             <div class="col-sm-10">
                                 <form:input cssClass="form-control" placeholder="请输入图片地址"  path="pic" />
+                                <div id="drop_pic" class="dropzone"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -91,20 +95,24 @@
 
                             <div class="col-sm-10">
                                 <form:input cssClass="form-control" placeholder="请输入图片地址"  path="pic2" />
+                                <div id="drop_pic2" class="dropzone"></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="content" class="col-sm-2 control-label">内容</label>
 
                             <div class="col-sm-10">
-                                <form:input cssClass="form-control" placeholder="请输入内容"  path="content" />
+                                <form:hidden  path="content" />
+                                <div id="editor">
+                                    ${content.content}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <button type="button" class="btn btn-default" onclick="history.go(-1)">返回</button>
-                        <button type="submit" class="btn btn-info pull-right">提交</button>
+                        <button id="btn_submit" type="submit" class="btn btn-info pull-right">提交</button>
                     </div>
                     <!-- /.box-footer -->
                 </from:form>
@@ -115,15 +123,55 @@
     </div>
     <jsp:include page="../include/copyright.jsp"></jsp:include>
     <jsp:include page="../include/footer.jsp"></jsp:include>
+    <script src="/myshop/static/assets/plugins/dropzone/min/dropzone.min.js"></script>
     <script src="/myshop/static/assets/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
+    <script src="/myshop/static/assets/plugins/wangEditor/wangEditor.min.js"></script>
     <sys:modal title="请选择" message="<ul id='my-tree' class='ztree'></ul>"></sys:modal>
 <script>
-    var callback = function(nodes) {
-        $("#categoryId").val(nodes[0].id)
-        $("#categoryName").val(nodes[0].name)
-        $("#modal-default").modal("hide")
-    }
-    app.initZTree("/myshop/content/category/tree/data", callback)
+    Dropzone.autoDiscover = false;
+
+    app.initDropzone({
+        url: "/myshop/upload",
+        id: "#drop_pic",
+        init: function () {
+            this.on("success", function (file, data) {
+                $("#pic").val(data.fileName)
+            })
+        }
+    })
+
+    app.initDropzone({
+        url: "/myshop/upload",
+        id: "#drop_pic2",
+        init: function () {
+            this.on("success", function (file, data) {
+                $("#pic2").val(data.fileName)
+            })
+        }
+    })
+
+
+
+    $(function () {
+        var E = window.wangEditor
+        var editor = new E('#editor')
+        editor.create()
+
+        $("#btn_submit").click(
+            function() {
+                $("#content").val(editor.txt.html())
+            }
+        )
+
+        var callback = function(nodes) {
+            $("#categoryId").val(nodes[0].id)
+            $("#categoryName").val(nodes[0].name)
+            $("#modal-default").modal("hide")
+        }
+        app.initZTree("/myshop/content/category/tree/data", callback)
+
+
+    })
 </script>
 </body>
 </html>

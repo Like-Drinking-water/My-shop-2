@@ -5,7 +5,7 @@
 <%@ taglib prefix="sys" tagdir="/WEB-INF/tags/sys" %>
 <html>
 <head>
-    <title>我的商城 | 用户管理</title>
+    <title>我的商城 | 内容管理</title>
     <jsp:include page="../include/header.jsp"></jsp:include>
     <link rel="stylesheet" href="/myshop/static/assets/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css">
 </head>

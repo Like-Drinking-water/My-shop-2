@@ -7,6 +7,27 @@ var app = function () {
     var deleteArray = new Array()
     var afterDelete = false
 
+    //dropZone
+    var defaultOption = {
+        url: "", // 文件提交地址
+        method: "post",  // 也可用put
+        paramName: "dropFile", // 默认为file
+        maxFiles: 1,// 一次性上传的文件数量上限
+        maxFilesize: 2, // 文件大小，单位：MB
+        acceptedFiles: ".jpg,.gif,.png,.jpeg", // 上传的类型
+        addRemoveLinks: true,
+        parallelUploads: 1,// 一次上传的文件数量
+        //previewsContainer:"#preview", // 上传图片的预览窗口
+        dictDefaultMessage: '拖动文件至此或者点击上传',
+        dictMaxFilesExceeded: "您最多只能上传" + this.maxFiles + "个文件！",
+        dictResponseError: '文件上传失败!',
+        dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg。",
+        dictFallbackMessage: "浏览器不受支持",
+        dictFileTooBig: "文件过大上传文件最大支持.",
+        dictRemoveLinks: "删除",
+        dictCancelUpload: "取消"
+    }
+
     var handleInit = function () {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
@@ -168,6 +189,12 @@ var app = function () {
         })
     }
 
+    var handleDropZone = function (option) {
+        $.extend(defaultOption, option)
+
+        new Dropzone(defaultOption.id, defaultOption)
+    }
+
     return {
         init: function() {
             handleInit()
@@ -189,6 +216,9 @@ var app = function () {
         },
         initZTree: function (url, callback) {
             handleInitZTree(url, callback)
+        },
+        initDropzone: function (option) {
+            handleDropZone(option)
         }
     }
 
