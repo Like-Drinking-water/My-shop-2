@@ -1,5 +1,6 @@
 package com.huanleichen.my.shop.web.admin.web.controller;
 
+import com.huanleichen.my.shop.commons.dto.BaseResult;
 import com.huanleichen.my.shop.domain.ContentCategory;
 import com.huanleichen.my.shop.web.admin.service.ContentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class ContentCategoryController {
             contentCategory = new ContentCategory();
         }
         else {
-            contentCategory = service.getContentCategoryById(id);
+            contentCategory = service.getById(id);
             if (contentCategory == null) {
                 contentCategory = new ContentCategory();
             }
@@ -57,8 +59,23 @@ public class ContentCategoryController {
     }
 
     @RequestMapping(value = "form", method = RequestMethod.GET)
-    public String form() {
+    public String form(ContentCategory contentCategory) {
         return "content_category_form";
+    }
+
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public String save(ContentCategory contentCategory, Model model, RedirectAttributes redirectAttributes) {
+        BaseResult baseResult = service.save(contentCategory);
+        //添加成功
+        if (baseResult.getStatus() == 200) {
+            redirectAttributes.addFlashAttribute("result", baseResult);
+            return "redirect:list";
+        }
+        //添加失败
+        else {
+            model.addAttribute("result", baseResult);
+            return "content_category_form";
+        }
     }
 
     /**
@@ -69,7 +86,7 @@ public class ContentCategoryController {
      */
     private void sortList(List<ContentCategory> source, List<ContentCategory> target, Long parentId) {
         for (ContentCategory content: source) {
-            if (content.getParentId().equals(parentId)) {
+            if (content.getParent().getId().equals(parentId)) {
                 target.add(content);
 
                 if (content.getIsParent()) {

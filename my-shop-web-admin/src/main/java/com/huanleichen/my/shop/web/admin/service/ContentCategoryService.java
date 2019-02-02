@@ -1,15 +1,11 @@
 package com.huanleichen.my.shop.web.admin.service;
 
+import com.huanleichen.my.shop.commons.persistence.BaseTreeService;
 import com.huanleichen.my.shop.domain.ContentCategory;
 
 import java.util.List;
 
-public interface ContentCategoryService {
-    /**
-     * 查询所有内容
-     * @return
-     */
-    public List<ContentCategory> selectAll();
+public interface ContentCategoryService extends BaseTreeService<ContentCategory> {
 
     /**
      * 通过父节点的 id 找到对应的子节点
@@ -17,11 +13,4 @@ public interface ContentCategoryService {
      * @return
      */
     public List<ContentCategory> selectByParentId(Long parentId);
-
-    /**
-     * 通过 ID 获取内容分类
-     * @param id
-     * @return
-     */
-    public ContentCategory getContentCategoryById(Long id);
 }

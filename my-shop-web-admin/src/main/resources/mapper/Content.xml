@@ -12,13 +12,20 @@
         a.pic2,
         a.content,
         a.created,
-        a.updated
+        a.updated,
+        b.id AS "contentCategory.id",
+        b.name AS "contentCategory.name"
     </sql>
+    <sql id="ContentColumnsJoin">
+        LEFT JOIN tb_content_category AS b ON a.category_id = b.id
+    </sql>
+
     <select id="selectAll" resultType="Content">
         SELECT
         <include refid="ContentColumns"></include>
         FROM
         tb_content AS a
+        <include refid="ContentColumnsJoin"></include>
     </select>
     <insert id="insert">
         INSERT INTO `tb_content` (
@@ -35,7 +42,7 @@
         )
         VALUES
         (
-            #{categoryId},
+            #{contentCategory.id},
             #{title},
             #{subTitle},
             #{titleDesc},
@@ -52,21 +59,22 @@
         FROM
           tb_content
         WHERE
-          id = #{id}
+          a.id = #{id}
     </delete>
-    <select id="getContentById" resultType="Content">
+    <select id="getById" resultType="Content">
         SELECT
         <include refid="ContentColumns"></include>
         FROM
         tb_content AS a
+        <include refid="ContentColumnsJoin"></include>
         WHERE
-        id = #{id}
+        a.id = #{id}
     </select>
     <update id="update">
         UPDATE
           `tb_content`
         SET
-          `category_id` = #{categoryId},
+          `category_id` = #{contentCatagory.id},
           `title` = #{title},
           `sub_title` = #{subTitle},
           `title_desc` = #{titleDesc},
@@ -91,15 +99,16 @@
         <include refid="ContentColumns"></include>
         FROM
         tb_content AS a
+        <include refid="ContentColumnsJoin"></include>
         <where>
-            <if test="content.title != null and content.title != ''">
-                AND title LIKE CONCAT("%", #{content.title}, "%")
+            <if test="entity.title != null and entity.title != ''">
+                AND title LIKE CONCAT("%", #{entity.title}, "%")
             </if>
-            <if test="content.subTitle != null and content.subTitle != ''">
-                AND sub_title LIKE CONCAT("%", #{content.subTitle}, "%")
+            <if test="entity.subTitle != null and entity.subTitle != ''">
+                AND sub_title LIKE CONCAT("%", #{entity.subTitle}, "%")
             </if>
-            <if test="content.titleDesc != null and content.titleDesc != ''">
-                AND title_desc LIKE CONCAT("%", #{content.titleDesc}, "%")
+            <if test="entity.titleDesc != null and entity.titleDesc != ''">
+                AND title_desc LIKE CONCAT("%", #{entity.titleDesc}, "%")
             </if>
         </where>
         LIMIT #{start}, #{length}

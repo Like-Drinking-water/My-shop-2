@@ -50,8 +50,8 @@
                             <label for="categoryName" class="col-sm-2 control-label">父目录</label>
 
                             <div class="col-sm-10">
-                                <from:hidden path="categoryId" />
-                                <input class="form-control required " placeholder="请选择" id="categoryName" readonly="true" data-toggle="modal" data-target="#modal-default"/>
+                                <from:hidden id="categoryId" path="contentCategory.id" />
+                                <input class="form-control required " placeholder="请选择" id="categoryName" value="${content.contentCategory.name}" readonly="true" data-toggle="modal" data-target="#modal-default"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -150,12 +150,15 @@
         }
     })
 
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    editor.customConfig.uploadImgServer = '/myshop/upload'
+    editor.customConfig.uploadFileName = 'editorFile'
+    editor.create()
 
 
     $(function () {
-        var E = window.wangEditor
-        var editor = new E('#editor')
-        editor.create()
+
 
         $("#btn_submit").click(
             function() {

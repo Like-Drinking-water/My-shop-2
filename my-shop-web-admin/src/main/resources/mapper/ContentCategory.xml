@@ -3,19 +3,24 @@
 <mapper namespace="com.huanleichen.my.shop.web.admin.dao.ContentCategoryDao">
     <sql id="ContentCategoryColumns">
         a.id,
-        a.parent_id AS 'parentId',
+        IFNULL(a.parent_id, 0) AS 'parent.id',
         a.name,
         a.status,
         a.sort_order AS 'sortOrder',
         a.is_parent AS 'isParent',
         a.created,
-        a.updated
+        a.updated,
+        IFNULL(b.name, '/') AS 'parent.name'
+    </sql>
+    <sql id="ContentCategoryJoin">
+        LEFT JOIN tb_content_category AS b ON a.parent_id = b.id
     </sql>
     <select id="selectAll" resultType="ContentCategory">
         SELECT
         <include refid="ContentCategoryColumns"></include>
         FROM
         tb_content_category AS a
+        <include refid="ContentCategoryJoin"></include>
         ORDER BY a.parent_id ASC,
         a.sort_order ASC,
         a.is_parent DESC
@@ -25,15 +30,51 @@
         <include refid="ContentCategoryColumns"></include>
         FROM
         tb_content_category AS a
+        <include refid="ContentCategoryJoin"></include>
         WHERE
-        parent_id=#{parentId}
+        a.parent_id=#{parentId}
     </select>
-    <select id="getContentCategoryById" resultType="ContentCategory" parameterType="java.lang.Long">
+    <select id="getById" resultType="ContentCategory" parameterType="java.lang.Long">
         SELECT
         <include refid="ContentCategoryColumns"></include>
         FROM
         tb_content_category AS a
+        <include refid="ContentCategoryJoin"></include>
         WHERE
-        id = #{id}
+        a.id = #{id}
     </select>
+    <insert id="insert">
+        INSERT INTO `myshop`.`tb_content_category` (
+          `parent_id`,
+          `name`,
+          `status`,
+          `sort_order`,
+          `is_parent`,
+          `created`,
+          `updated`
+        )
+        VALUES
+          (
+            #{parent.id},
+            #{name},
+            #{status},
+            #{sortOrder},
+            #{isParent},
+            #{created},
+            #{updated}
+          )
+    </insert>
+    <update id="update">
+        UPDATE
+          `tb_content_category`
+        SET
+          `parent_id` = #{parent.id},
+          `name` = #{name},
+          `status` = #{status},
+          `sort_order` = #{sortOrder},
+          `is_parent` = #{isParent},
+          `created` = #{created},
+          `updated` = #{updated}
+        WHERE `id` = #{id}
+    </update>
 </mapper>

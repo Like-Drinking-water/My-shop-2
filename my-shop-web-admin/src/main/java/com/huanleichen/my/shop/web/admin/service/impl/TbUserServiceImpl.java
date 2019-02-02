@@ -6,6 +6,7 @@ import com.huanleichen.my.shop.commons.validator.BeanValidator;
 import com.huanleichen.my.shop.domain.TbUser;
 import com.huanleichen.my.shop.web.admin.dao.TbUserDao;
 import com.huanleichen.my.shop.web.admin.service.TbUserService;
+import com.huanleichen.my.shop.web.admin.service.abstracts.AbstractBaseServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,35 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class TbUserServiceImpl implements TbUserService {
-    Logger logger = LoggerFactory.getLogger(TbUserServiceImpl.class);
-
-    @Autowired
-    private TbUserDao tbUserDao;
-
-    @Override
-    public List<TbUser> selectAll() {
-        return tbUserDao.selectAll();
-    }
-
-    @Override
-    public void delete(Long id) {
-        tbUserDao.delete(id);
-    }
-
-    @Override
-    public TbUser getTbUserById(Long id) {
-        return tbUserDao.getTbUserById(id);
-    }
-
-    @Override
-    public void update(TbUser tbUser) {
-        tbUserDao.update(tbUser);
-    }
+public class TbUserServiceImpl extends AbstractBaseServiceImpl<TbUser, TbUserDao> implements TbUserService {
 
     @Override
     public TbUser login(String email, String password, boolean remember) {
-        TbUser tbUser = tbUserDao.selectByEmail(email);
+        TbUser tbUser = dao.selectByEmail(email);
 
         if (tbUser != null) {
             tbUser.setRemember(remember);
@@ -84,48 +61,9 @@ public class TbUserServiceImpl implements TbUserService {
             baseResult = BaseResult.successResult();
         }
 
-        //如果用户的信息格式填写正确
-        if (baseResult.getStatus() == BaseResult.SUCCESS_STATUS) {
-            tbUser.setUpdated(new Date());
-            //如果 tbUser 中没有保存 id 信息，则说明要新增用户
-            if (tbUser.getId() == null) {
-                tbUser.setCreated(new Date());
-                tbUserDao.insert(tbUser);
-                baseResult.setMessage("添加成功");
-            } else {
-                tbUserDao.update(tbUser);
-                baseResult.setMessage("修改成功");
-            }
-        }
-
-        return baseResult;
+        return super.save(tbUser, baseResult);
     }
 
-
-    @Override
-    public void deleteMulti(String[] ids) {
-        tbUserDao.deleteMulti(ids);
-    }
-
-    @Override
-    public PageInfo<TbUser> getPage(int start, int length, int draw, TbUser tbUser) {
-        int count = tbUserDao.count(tbUser);
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("start", start);
-        map.put("length", length);
-        map.put("draw", draw);
-        map.put("tbUser", tbUser);
-        List<TbUser> data = tbUserDao.getPage(map);
-
-        PageInfo<TbUser> page = new PageInfo<>();
-        page.setDraw(draw);
-        page.setRecordsFiltered(count);
-        page.setRecordsTotal(count);
-        page.setData(data);
-
-        return page;
-    }
 
 
     @Override
@@ -133,17 +71,17 @@ public class TbUserServiceImpl implements TbUserService {
         //如果 tbUser 的 id 为空
         //则表示在添加用户，则新增用户的邮箱不能与之前任一用户的邮箱相同
         if (tbUser.getId() == null) {
-            return tbUserDao.selectByEmail(email) != null;
+            return dao.selectByEmail(email) != null;
         }
         //表示修改用户信息时
         else {
             //如果邮箱不变的化，则直接返回 false
-            if (email.equals(tbUserDao.getTbUserById(tbUser.getId()).getEmail())) {
+            if (email.equals(dao.getById(tbUser.getId()).getEmail())) {
                 return false;
             }
 
             else {
-                return tbUserDao.selectByEmail(email) != null;
+                return dao.selectByEmail(email) != null;
             }
         }
 

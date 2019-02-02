@@ -17,8 +17,8 @@
                 <td>${content.id}</td>
             </tr>
             <tr>
-                <th>父目录ID</th>
-                <td>${content.categoryId}</td>
+                <th>父目录</th>
+                <td>${content.contentCategory.name}</td>
             </tr>
             <tr>
                 <th>标题</th>

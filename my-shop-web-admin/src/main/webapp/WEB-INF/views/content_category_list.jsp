@@ -64,15 +64,14 @@
                                     </thead>
                                     <tbody>
                                     <c:forEach items="${contentCategory}" var="content">
-                                        <tr id="${content.id}" pId="${content.parentId}">
+                                        <tr id="${content.id}" pId="${content.parent.id}">
                                             <td>${content.id}</td>
                                             <td><span controller="true">${content.name}</span></td>
                                             <td>${content.sortOrder}</td>
                                             <td>
-                                                <a href='#' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;
+                                                <a href='/myshop/content/category/form?id=${content.id}' type='button' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> 修改</a>&nbsp;&nbsp;&nbsp;
                                                 <button type='button' class='btn btn-danger btn-sm'><i class='fa  fa-trash-o'></i> 删除</button>&nbsp;&nbsp;&nbsp;
-                                                <button href="#" type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> 添加下级菜单</button>&nbsp;&nbsp;&nbsp;
-                                                <button href="#" type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> 添加同级菜单</button>&nbsp;&nbsp;&nbsp;
+                                                <a href="/myshop/content/category/form?parent.id=${content.id}&parent.name=${content.name}" type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> 添加下级菜单</a>&nbsp;&nbsp;&nbsp;
                                             </td>
                                         </tr>
                                     </c:forEach>

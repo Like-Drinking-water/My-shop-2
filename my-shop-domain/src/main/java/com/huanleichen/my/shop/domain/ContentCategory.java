@@ -10,13 +10,13 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class ContentCategory extends BaseEntity {
-    @NotNull(message = "父目录不能为空")
-    private Long parentId;
+
     @Length(min = 2, max = 20, message = "分类名称的长度必须在 2 - 20 位之间")
     private String name;
     private Integer status;
-    @Digits(integer = 12, fraction = 0, message = "请输入整数")
+    @NotNull(message = "排序不能为空")
     private Integer sortOrder;
     @JsonProperty(value = "isParent")
     private Boolean isParent;
+    private ContentCategory parent;
 }

@@ -47,8 +47,8 @@
                             <label for="categoryName" class="col-sm-2 control-label">父目录</label>
 
                             <div class="col-sm-10">
-                                <from:hidden path="parentId" />
-                                <input class="form-control required " placeholder="请选择" id="categoryName" readonly="true" data-toggle="modal" data-target="#modal-default"/>
+                                <from:hidden path="parent.id" />
+                                <input class="form-control " placeholder="请选择" value="${contentCategory.parent.name}" id="categoryName" readonly="true" data-toggle="modal" data-target="#modal-default"/>
                             </div>
                         </div>
                         <div class="form-group">

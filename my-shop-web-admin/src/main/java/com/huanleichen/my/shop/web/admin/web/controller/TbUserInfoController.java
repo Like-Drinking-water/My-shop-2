@@ -33,7 +33,7 @@ public class TbUserInfoController {
         }
 
         else {
-            tbUser = tbUserService.getTbUserById(id);
+            tbUser = tbUserService.getById(id);
         }
 
         return tbUser;

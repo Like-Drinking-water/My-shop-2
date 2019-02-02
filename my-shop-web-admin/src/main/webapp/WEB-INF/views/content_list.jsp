@@ -108,6 +108,7 @@
                                             </label>
                                         </th>
                                         <th>ID</th>
+                                        <th>父目录</th>
                                         <th>标题</th>
                                         <th>子标题</th>
                                         <th>标题描述</th>
@@ -180,6 +181,7 @@
                     }
                 },
                 { data: 'id' },
+                { data: 'contentCategory.name'},
                 { data: 'title' },
                 { data: 'subTitle' },
                 { data: 'titleDesc' },

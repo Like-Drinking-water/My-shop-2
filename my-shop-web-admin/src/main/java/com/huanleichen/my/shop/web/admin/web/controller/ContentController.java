@@ -31,7 +31,7 @@ public class ContentController {
         }
 
         else {
-            content = service.getContentById(id);
+            content = service.getById(id);
         }
 
         return content;
