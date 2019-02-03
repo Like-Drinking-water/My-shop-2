@@ -7,13 +7,16 @@ import com.huanleichen.my.shop.web.admin.dao.ContentCategoryDao;
 import com.huanleichen.my.shop.web.admin.service.ContentCategoryService;
 import com.huanleichen.my.shop.web.admin.service.abstracts.AbstractBaseTreeServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
+@Transactional(readOnly = true)
 public class ContentCategoryServiceImpl extends AbstractBaseTreeServiceImpl<ContentCategory, ContentCategoryDao> implements ContentCategoryService {
 
     @Override
+    @Transactional(readOnly = false)
     public BaseResult save(ContentCategory entity) {
         BaseResult baseResult = null;
         String erroString = BeanValidator.validator(entity);

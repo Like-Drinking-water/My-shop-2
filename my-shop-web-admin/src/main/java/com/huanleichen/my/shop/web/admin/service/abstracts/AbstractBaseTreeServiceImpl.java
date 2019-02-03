@@ -1,13 +1,15 @@
 package com.huanleichen.my.shop.web.admin.service.abstracts;
 
-import com.huanleichen.my.shop.commons.persistence.BaseEntity;
 import com.huanleichen.my.shop.commons.persistence.BaseTreeDao;
+import com.huanleichen.my.shop.commons.persistence.BaseTreeEntity;
 import com.huanleichen.my.shop.commons.persistence.BaseTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public abstract class AbstractBaseTreeServiceImpl<T extends BaseEntity, E extends BaseTreeDao<T>> implements BaseTreeService<T> {
+@Transactional(readOnly = true)
+public abstract class AbstractBaseTreeServiceImpl<T extends BaseTreeEntity, E extends BaseTreeDao<T>> implements BaseTreeService<T> {
     @Autowired
     protected E dao;
 
@@ -17,6 +19,7 @@ public abstract class AbstractBaseTreeServiceImpl<T extends BaseEntity, E extend
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void delete(Long id) {
         dao.delete(id);
     }
@@ -32,6 +35,7 @@ public abstract class AbstractBaseTreeServiceImpl<T extends BaseEntity, E extend
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void update(T entity) {
         dao.update(entity);
     }

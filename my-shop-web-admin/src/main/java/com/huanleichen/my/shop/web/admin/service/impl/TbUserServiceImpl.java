@@ -1,25 +1,19 @@
 package com.huanleichen.my.shop.web.admin.service.impl;
 
 import com.huanleichen.my.shop.commons.dto.BaseResult;
-import com.huanleichen.my.shop.commons.dto.PageInfo;
 import com.huanleichen.my.shop.commons.validator.BeanValidator;
 import com.huanleichen.my.shop.domain.TbUser;
 import com.huanleichen.my.shop.web.admin.dao.TbUserDao;
 import com.huanleichen.my.shop.web.admin.service.TbUserService;
 import com.huanleichen.my.shop.web.admin.service.abstracts.AbstractBaseServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
+@Transactional(readOnly = true)
 public class TbUserServiceImpl extends AbstractBaseServiceImpl<TbUser, TbUserDao> implements TbUserService {
 
     @Override
@@ -41,6 +35,7 @@ public class TbUserServiceImpl extends AbstractBaseServiceImpl<TbUser, TbUserDao
     }
 
     @Override
+    @Transactional(readOnly = false)
     public BaseResult save(TbUser tbUser) {
         BaseResult baseResult = null;
         String erroString = BeanValidator.validator(tbUser);
@@ -60,7 +55,8 @@ public class TbUserServiceImpl extends AbstractBaseServiceImpl<TbUser, TbUserDao
         else {
             baseResult = BaseResult.successResult();
         }
-
+        //为密码加密
+        tbUser.setPassword(DigestUtils.md5DigestAsHex(tbUser.getPassword().getBytes()));
         return super.save(tbUser, baseResult);
     }
 

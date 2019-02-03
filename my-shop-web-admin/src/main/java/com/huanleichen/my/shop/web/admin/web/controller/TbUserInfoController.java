@@ -4,8 +4,7 @@ import com.huanleichen.my.shop.commons.dto.BaseResult;
 import com.huanleichen.my.shop.commons.dto.PageInfo;
 import com.huanleichen.my.shop.domain.TbUser;
 import com.huanleichen.my.shop.web.admin.service.TbUserService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.huanleichen.my.shop.web.admin.service.abstracts.AbstractBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,32 +19,22 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "user")
-public class TbUserInfoController {
-    @Autowired
-    private TbUserService tbUserService;
+public class TbUserInfoController extends AbstractBaseController<TbUser, TbUserService> {
 
     @ModelAttribute
     public TbUser getTbUser(Long id) {
-        TbUser tbUser = null;
-
-        if (id == null) {
-            tbUser = new TbUser();
-        }
-
-        else {
-            tbUser = tbUserService.getById(id);
-        }
-
-        return tbUser;
+        return super.getEntity(id, TbUser.class);
     }
 
+    @Override
     @RequestMapping(value = {"tbUserInfo"}, method = RequestMethod.GET)
-    public String userInfo() {
+    public String list() {
 
         //将视图名称返回给 DispatcherServlet
         return "tbUserInfo";
     }
 
+    @Override
     @RequestMapping(value = "form", method = RequestMethod.GET)
     public String form() {
         return "userform";
@@ -53,52 +42,21 @@ public class TbUserInfoController {
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(TbUser tbUser, Model model, RedirectAttributes redirectAttributes) {
-        BaseResult result = tbUserService.save(tbUser);
-
-        model.addAttribute("result", result);
-
-        if (result.getStatus() == BaseResult.SUCCESS_STATUS) {
-            redirectAttributes.addFlashAttribute("result", result);
-            return "redirect:tbUserInfo";
-        } else {
-            model.addAttribute("result", result);
-            return "userform";
-        }
-
-
+        return super.save(tbUser, model, redirectAttributes, "tbUserInfo", "userform");
     }
 
+    @Override
     @ResponseBody
     @RequestMapping(value = "deleteMulti", method = RequestMethod.POST)
     public BaseResult deleteMulti(String ids) {
-        BaseResult baseResult = null;
-
-        if (!StringUtils.isBlank(ids)) {
-            String[] deleteArray = ids.split(",");
-            tbUserService.deleteMulti(deleteArray);
-            baseResult = BaseResult.successResult("删除成功");
-        }
-
-        else {
-            baseResult = BaseResult.failResult("删除失败");
-        }
-
-        return baseResult;
+        return super.deleteMulti(ids);
     }
 
     @ResponseBody
     @RequestMapping(value = "page", method = RequestMethod.GET)
     public PageInfo<TbUser> page(HttpServletRequest request, TbUser tbUser) {
 
-        String strDraw = request.getParameter("draw");
-        String strStart = request.getParameter("start");
-        String strLength = request.getParameter("length");
-
-        int draw = strDraw != null? Integer.valueOf(strDraw) : 0;
-        int start = strStart != null? Integer.valueOf(strStart) : 0;
-        int length = strLength != null? Integer.valueOf(strLength) : 10;
-
-        return tbUserService.getPage(start, length, draw, tbUser);
+        return super.page(request, tbUser);
 
     }
 
@@ -109,7 +67,7 @@ public class TbUserInfoController {
 
         boolean isExist = false;
 
-        if (tbUserService.isEmailExist(email, new TbUser())) {
+        if (service.isEmailExist(email, new TbUser())) {
             isExist = true;
         }
 

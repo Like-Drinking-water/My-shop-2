@@ -4,8 +4,7 @@ import com.huanleichen.my.shop.commons.dto.BaseResult;
 import com.huanleichen.my.shop.commons.dto.PageInfo;
 import com.huanleichen.my.shop.domain.Content;
 import com.huanleichen.my.shop.web.admin.service.ContentService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.huanleichen.my.shop.web.admin.service.abstracts.AbstractBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,25 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "content")
-public class ContentController {
-    @Autowired
-    private ContentService service;
+public class ContentController extends AbstractBaseController<Content, ContentService> {
 
     @ModelAttribute
     public Content getContent(Long id) {
-        Content content = null;
-
-        if (id == null) {
-            content = new Content();
-        }
-
-        else {
-            content = service.getById(id);
-        }
-
-        return content;
+       return super.getEntity(id, Content.class);
     }
 
+    @Override
     @RequestMapping(value = {"list"}, method = RequestMethod.GET)
     public String list() {
 
@@ -44,6 +32,7 @@ public class ContentController {
         return "content_list";
     }
 
+    @Override
     @RequestMapping(value = "form", method = RequestMethod.GET)
     public String form() {
         return "content_form";
@@ -51,52 +40,20 @@ public class ContentController {
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(Content content, Model model, RedirectAttributes redirectAttributes) {
-        BaseResult result = service.save(content);
-
-        model.addAttribute("result", result);
-
-        if (result.getStatus() == BaseResult.SUCCESS_STATUS) {
-            redirectAttributes.addFlashAttribute("result", result);
-            return "redirect:list";
-        } else {
-            model.addAttribute("result", result);
-            return "content_form";
-        }
-
-
+        return super.save(content, model, redirectAttributes, "list", "content_form");
     }
 
     @ResponseBody
     @RequestMapping(value = "deleteMulti", method = RequestMethod.POST)
     public BaseResult deleteMulti(String ids) {
-        BaseResult baseResult = null;
-
-        if (!StringUtils.isBlank(ids)) {
-            String[] deleteArray = ids.split(",");
-            service.deleteMulti(deleteArray);
-            baseResult = BaseResult.successResult("删除成功");
-        }
-
-        else {
-            baseResult = BaseResult.failResult("删除失败");
-        }
-
-        return baseResult;
+        return super.deleteMulti(ids);
     }
 
     @ResponseBody
     @RequestMapping(value = "page", method = RequestMethod.GET)
     public PageInfo<Content> page(HttpServletRequest request, Content content) {
 
-        String strDraw = request.getParameter("draw");
-        String strStart = request.getParameter("start");
-        String strLength = request.getParameter("length");
-
-        int draw = strDraw != null? Integer.valueOf(strDraw) : 0;
-        int start = strStart != null? Integer.valueOf(strStart) : 0;
-        int length = strLength != null? Integer.valueOf(strLength) : 10;
-
-        return service.getPage(start, length, draw, content);
+        return super.page(request, content);
 
     }
 

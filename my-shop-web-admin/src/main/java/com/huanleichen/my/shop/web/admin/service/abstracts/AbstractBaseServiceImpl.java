@@ -6,12 +6,14 @@ import com.huanleichen.my.shop.commons.persistence.BaseDao;
 import com.huanleichen.my.shop.commons.persistence.BaseEntity;
 import com.huanleichen.my.shop.commons.persistence.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Transactional(readOnly = true)
 public abstract class AbstractBaseServiceImpl<T extends BaseEntity, E extends BaseDao<T>> implements BaseService<T> {
     @Autowired
     protected E dao;
@@ -22,6 +24,7 @@ public abstract class AbstractBaseServiceImpl<T extends BaseEntity, E extends Ba
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void delete(Long id) {
         dao.delete(id);
     }
@@ -32,11 +35,13 @@ public abstract class AbstractBaseServiceImpl<T extends BaseEntity, E extends Ba
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void update(T entity) {
         dao.update(entity);
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deleteMulti(String[] ids) {
         dao.deleteMulti(ids);
     }
@@ -61,6 +66,7 @@ public abstract class AbstractBaseServiceImpl<T extends BaseEntity, E extends Ba
         return page;
     }
 
+    @Transactional(readOnly = false)
     protected BaseResult save(T entity, BaseResult baseResult) {
         //如果用户的信息格式填写正确
         if (baseResult.getStatus() == BaseResult.SUCCESS_STATUS) {
