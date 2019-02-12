@@ -6,8 +6,7 @@ import org.apache.commons.mail.SimpleEmail;
 public class EmailExternal extends SimpleEmail {
     @Override
     public String send() throws EmailException {
-        this.buildMimeMessage();
-        String messageId = this.sendMimeMessage();
+        String messageId = this.send();
         this.message = null;
         return messageId;
     }
