@@ -53,10 +53,16 @@
             <artifactId>jstl</artifactId>
         </dependency>
 
+        <!-- Commons Begin -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+        </dependency>
+        <!-- Commons End -->
 
         <!-- Json Begin -->
         <dependency>
@@ -81,6 +87,20 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+
+        <!-- Upload Begin -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
+        <!-- Upload Begin -->
+
+        <!-- HttpClient Begin -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <!-- HttpClient End -->
     </dependencies>
 
 </project>

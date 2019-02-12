@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanleichen.my.shop.web.api.dao.ContentDao">
+    <sql id="ContentColumns">
+        a.id,
+        a.category_id AS categoryId,
+        a.title,
+        a.sub_title AS subTitle,
+        a.title_desc AS titleDesc,
+        a.url,
+        a.pic,
+        a.pic2,
+        a.content,
+        a.created,
+        a.updated,
+        b.id AS "contentCategory.id",
+        b.name AS "contentCategory.name"
+    </sql>
+    <sql id="ContentColumnsJoin">
+        LEFT JOIN tb_content_category AS b ON a.category_id = b.id
+    </sql>
+
+   <select id="selectByCategoryId" resultType="Content" parameterType="java.lang.Long">
+       SELECT
+       <include refid="ContentColumns"></include>
+       FROM tb_content AS a
+       <include refid="ContentColumnsJoin"></include>
+       WHERE a.category_id = #{id}
+   </select>
+</mapper>

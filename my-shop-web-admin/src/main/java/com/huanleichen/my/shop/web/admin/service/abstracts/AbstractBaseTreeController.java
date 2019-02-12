@@ -2,11 +2,7 @@ package com.huanleichen.my.shop.web.admin.service.abstracts;
 
 import com.huanleichen.my.shop.commons.persistence.BaseTreeEntity;
 import com.huanleichen.my.shop.commons.persistence.BaseTreeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 
 public abstract class AbstractBaseTreeController<T extends BaseTreeEntity, S extends BaseTreeService<T>> extends AbstactOriginController<T, S> {

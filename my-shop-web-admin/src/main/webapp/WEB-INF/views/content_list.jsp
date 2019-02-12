@@ -201,7 +201,7 @@
                             return ""
                         }
                         else {
-                            return "<a href='"+ "/myshop/static/upload/" + row.pic + "' target='_blank'>查看</a>"
+                            return "<a href='"+ "http://localhost:8082/static/upload/" + row.pic + "' target='_blank'>查看</a>"
                         }
                     }
                 },
@@ -211,7 +211,7 @@
                             return ""
                         }
                         else {
-                            return "<a href='" + "/myshop/static/upload/" + row.pic2 + "' target='_blank'>查看</a>"
+                            return "<a href='" + "http://localhost:8082/static/upload/" + row.pic2 + "' target='_blank'>查看</a>"
                         }
                     }
                 },
