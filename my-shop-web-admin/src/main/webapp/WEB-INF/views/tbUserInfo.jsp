@@ -181,7 +181,7 @@
             },
         ]
 
-        var datatable = app.initPage("/myshop/user/page", columns)
+        var datatable = app.initPage("/myshop/user/page/", columns)
 
         $("#search_button").click(function () {
             var username = $("#username").val();

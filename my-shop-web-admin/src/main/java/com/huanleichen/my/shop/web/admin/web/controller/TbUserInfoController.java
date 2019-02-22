@@ -53,7 +53,7 @@ public class TbUserInfoController extends AbstractBaseController<TbUser, TbUserS
     }
 
     @ResponseBody
-    @RequestMapping(value = "page", method = RequestMethod.POST)
+    @RequestMapping(value = "page", method = RequestMethod.GET)
     public PageInfo<TbUser> page(HttpServletRequest request, TbUser tbUser) {
 
         return super.page(request, tbUser);
